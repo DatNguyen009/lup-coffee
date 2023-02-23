@@ -1,0 +1,15 @@
+.containerFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 10rem;
+  background-color: #fafafb;
+}
+@media only screen and (max-width: 480px) {
+  .containerFooter {
+    padding: 1rem 2rem;
+  }
+  .containerFooter div:nth-child(2) {
+    text-align: center;
+  }
+}
