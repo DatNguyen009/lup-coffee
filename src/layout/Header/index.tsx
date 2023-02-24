@@ -1,5 +1,6 @@
 import React from "react";
 import "./Header.css";
+import "../../helpers/globalCss.css";
 import logo from "../../assets/icon/lupcafe.jpeg";
 import { Badge, Image, Popover, Space } from "antd";
 import ic_cart from "../../assets/icon/ic_cart.svg";
@@ -29,13 +30,9 @@ function Header() {
   );
 
   return (
-    <div className="containerHeader">
+    <div className="containerHeader flexBetween">
       <Link to="/">
-        <img
-          src={logo}
-          alt="logo"
-          style={{ width: "80px", height: "80px", borderRadius: "40px" }}
-        />
+        <img src={logo} alt="logo" className="header-logo" />
       </Link>
 
       <Space>
@@ -45,19 +42,11 @@ function Header() {
           trigger="click"
           style={{ width: "100%" }}
         >
-          <Image
-            src={ic_search}
-            preview={false}
-            style={{ cursor: "pointer", transform: "rotate(90deg)" }}
-          />
+          <Image src={ic_search} preview={false} className="header-search" />
         </Popover>
         <Link to="/cart">
-          <Badge count={cart.length} style={{ cursor: "pointer" }}>
-            <Image
-              src={ic_cart}
-              preview={false}
-              style={{ cursor: "pointer" }}
-            />
+          <Badge count={cart.length} className="cursorPointer ">
+            <Image src={ic_cart} preview={false} className="cursorPointer " />
           </Badge>
         </Link>
       </Space>

@@ -1,17 +1,21 @@
-import { useSelector } from "react-redux";
-import { CART_REDUCER } from "../../redux/reducers/ReducerTypes";
-import { Button, Form, Input, notification } from "antd";
-import { formatNumber } from "../../helpers/general";
-import ButtonGroup from "antd/es/button/button-group";
-import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import _ from "lodash";
-import { useDispatch } from "react-redux";
-import { updateCartAction } from "../../redux/actions/CartAction";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import "./Cart.css";
 import { addDoc, collection } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import _ from "lodash";
+import { useDispatch } from "react-redux";
+
+import { Button, Form, Input, notification } from "antd";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+
+import { CART_REDUCER } from "../../redux/reducers/ReducerTypes";
+import { formatNumber } from "../../helpers/general";
+import ButtonGroup from "antd/es/button/button-group";
+import { updateCartAction } from "../../redux/actions/CartAction";
 import { db } from "../../helpers/firebaseConfig";
+
+import "./Cart.css";
+import "../../helpers/globalCss.css";
 
 function Cart() {
   const { data: cart } = useSelector((state: any) => state[CART_REDUCER]);
@@ -21,7 +25,7 @@ function Cart() {
   const orderCollectionRef = collection(db, "order");
 
   const onFinish = async (values: any) => {
-    if (cart?.length === 0) {
+    if (!cart?.length) {
       api.error({
         message: "Đặt hàng thất bại!",
         description: "Không có sản phẩm nào trong giỏ hàng!!!",
@@ -93,7 +97,7 @@ function Cart() {
               { required: true, message: "Vui lòng nhập số điện thoại!" },
             ]}
           >
-            <Input />
+            <Input type="number" />
           </Form.Item>
           <Form.Item
             label="Địa chỉ"
@@ -120,29 +124,9 @@ function Cart() {
           }}
         >
           {cart?.map((item: any, index: number) => (
-            <div
-              key={index + "cart"}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                }}
-              >
-                <img
-                  src={item?.img}
-                  alt="logo"
-                  style={{
-                    width: "80px",
-                    height: "80px",
-                    borderRadius: "10px",
-                  }}
-                />
+            <div key={index + "cart"} className="flexBetweenAlignCenter">
+              <div className="cart-product-wrapper">
+                <img src={item?.img} alt="logo" className="cart-product__img" />
                 <div>
                   <b>{item?.name}</b>
                   <p>{formatNumber(item?.price)} đ</p>
@@ -169,11 +153,9 @@ function Cart() {
         </div>
         {cart?.length > 0 && (
           <div
+            className="flexBetweenAlignCenter"
             style={{
-              display: "flex",
-              alignItems: "center",
               gap: "30px",
-              justifyContent: "space-between",
             }}
           >
             <b>Tổng tiền: </b>

@@ -2,12 +2,24 @@
   display: flex;
   margin: 3rem;
   gap: 10px;
+  padding-top: 8rem;
 }
 
 .cartWrap {
   width: 50%;
   background: #fafafb;
   padding: 2rem;
+}
+
+.cart-product-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.cart-product__img {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
 }
 @media only screen and (max-width: 480px) {
   .cartContainer {

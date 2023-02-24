@@ -1,26 +1,18 @@
 import React from "react";
 import logo from "../../assets/icon/lupcafe.jpeg";
-import "./Footer.css";
 import ic_facebook from "../../assets/icon/ic_facebook.svg";
 import ic_instagram from "../../assets/icon/ic_instagram.svg";
+import "./Footer.css";
+import "../../helpers/globalCss.css";
 
 function Footer() {
   const handleNavigationSocial = () => {
     window.open("https://www.facebook.com/Lupcoffee.vn", "_blank");
   };
   return (
-    <div className="containerFooter">
+    <div className="containerFooter flexBetween">
       <div>
-        <img
-          src={logo}
-          alt="logo"
-          style={{
-            width: "80px",
-            height: "80px",
-            borderRadius: "40px",
-            marginBottom: "10px",
-          }}
-        />
+        <img src={logo} alt="logo" className="footer-logo" />
         <div
           style={{
             display: "flex",
