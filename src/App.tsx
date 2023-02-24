@@ -1,5 +1,3 @@
-import React from "react";
-import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomeView from "./view/Home";
 import NotFoundView from "./view/NotFound/NotFoundView";

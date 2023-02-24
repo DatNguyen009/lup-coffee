@@ -10,6 +10,7 @@ import {
   notification,
   Popconfirm,
   Tabs,
+  Spin,
 } from "antd";
 import { useEffect, useState } from "react";
 import { formatNumber } from "../../helpers/general";
@@ -153,6 +154,7 @@ function ManagerProductView() {
   ];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [actionSelected, setActionSelected] = useState("");
   const [others, setOthers] = useState<
     Array<{ index: number; size: string; price: number }>
@@ -249,6 +251,7 @@ function ManagerProductView() {
     const imageRef = ref(storage, `images/${imageUpload?.name + uuidv4()}`);
     const uploadBytesData = await uploadBytes(imageRef, imageUpload);
     const url = await getDownloadURL(uploadBytesData.ref);
+    setIsLoading(true);
 
     if (actionSelected === "edit") {
       const userDoc = doc(db, "product", String(productForm?.id));
@@ -261,6 +264,7 @@ function ManagerProductView() {
       api.success({
         message: "Cập nhật sản phẩm thành công!",
       });
+      setIsLoading(false);
       getProducts();
       return;
     }
@@ -278,6 +282,7 @@ function ManagerProductView() {
     api.success({
       message: "Thêm sản phẩm thành công!",
     });
+    setIsLoading(false);
   };
 
   const handleCancel = () => {
@@ -413,96 +418,100 @@ function ManagerProductView() {
         onCancel={handleCancel}
         onOk={handleOk}
       >
-        <h4>Nhập tên sản phẩm</h4>
-        <Input
-          value={productForm.name}
-          onChange={(value) =>
-            handleChangeForm(value.target.value.toString(), 0, "name")
-          }
-        />
-        <h4>Chọn loại sản phẩm</h4>
-        <Select
-          value={productForm?.type}
-          placeholder="Chọn loại"
-          onChange={(value) => handleChangeForm(value, 0, "type")}
-          style={{ width: "100%" }}
-        >
-          {category?.map((category: any) => (
-            <Select.Option value={category.name}>{category.name}</Select.Option>
-          ))}
-        </Select>
-        <br />
-        <Space wrap>
-          <h4>Chọn size và nhập giá</h4>
-          <Button onClick={handleAddSizeandPrice}>Thêm size và giá </Button>
-        </Space>
-
-        {others?.map((item, index) => (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "20px",
-              gap: "10px",
-            }}
+        <Spin tip="Loading" spinning={isLoading}>
+          <h4>Nhập tên sản phẩm</h4>
+          <Input
+            value={productForm.name}
+            onChange={(value) =>
+              handleChangeForm(value.target.value.toString(), 0, "name")
+            }
+          />
+          <h4>Chọn loại sản phẩm</h4>
+          <Select
+            value={productForm?.type}
+            placeholder="Chọn loại"
+            onChange={(value) => handleChangeForm(value, 0, "type")}
+            style={{ width: "100%" }}
           >
-            <Input.Group compact>
-              <Select
-                placeholder="Chọn size"
-                onChange={(value) => handleChangeForm(value, index, "size")}
-                style={{ width: "50%" }}
-                value={item?.size}
-              >
-                <Option value=""> </Option>
-                <Option value="S">S</Option>
-                <Option value="M">M</Option>
-                <Option value="L">L</Option>
-                <Option value="XL">XL</Option>
-              </Select>
-              <Input
-                style={{ width: "50%" }}
-                placeholder="Nhập giá theo size"
-                type="number"
-                value={item?.price}
-                onChange={(value) =>
-                  handleChangeForm(
-                    value.target.value.toString(),
-                    index,
-                    "price"
-                  )
-                }
-              />
-            </Input.Group>
+            {category?.map((category: any) => (
+              <Select.Option value={category.name}>
+                {category.name}
+              </Select.Option>
+            ))}
+          </Select>
+          <br />
+          <Space wrap>
+            <h4>Chọn size và nhập giá</h4>
+            <Button onClick={handleAddSizeandPrice}>Thêm size và giá </Button>
+          </Space>
 
-            <img
-              src={ic_close}
-              alt={ic_close}
-              onClick={() => handleDeleteItemOther(index)}
-              style={{ cursor: "pointer" }}
-            />
-          </div>
-        ))}
-        {productForm?.img ? (
-          <div>
-            <img
-              src={productForm?.img}
-              alt={productForm?.img}
+          {others?.map((item, index) => (
+            <div
               style={{
-                width: "80px",
-                height: "80px",
-                borderRadius: "10px",
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+                gap: "10px",
               }}
-            />
-            <img
-              className="imgPreview"
-              src={ic_close}
-              alt={ic_close}
-              onClick={handleDeleteImg}
-            />
-          </div>
-        ) : (
-          <Input type="file" onChange={handleChange} />
-        )}
+            >
+              <Input.Group compact>
+                <Select
+                  placeholder="Chọn size"
+                  onChange={(value) => handleChangeForm(value, index, "size")}
+                  style={{ width: "50%" }}
+                  value={item?.size}
+                >
+                  <Option value=""> </Option>
+                  <Option value="S">S</Option>
+                  <Option value="M">M</Option>
+                  <Option value="L">L</Option>
+                  <Option value="XL">XL</Option>
+                </Select>
+                <Input
+                  style={{ width: "50%" }}
+                  placeholder="Nhập giá theo size"
+                  type="number"
+                  value={item?.price}
+                  onChange={(value) =>
+                    handleChangeForm(
+                      value.target.value.toString(),
+                      index,
+                      "price"
+                    )
+                  }
+                />
+              </Input.Group>
+
+              <img
+                src={ic_close}
+                alt={ic_close}
+                onClick={() => handleDeleteItemOther(index)}
+                style={{ cursor: "pointer" }}
+              />
+            </div>
+          ))}
+          {productForm?.img ? (
+            <div>
+              <img
+                src={productForm?.img}
+                alt={productForm?.img}
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  borderRadius: "10px",
+                }}
+              />
+              <img
+                className="imgPreview"
+                src={ic_close}
+                alt={ic_close}
+                onClick={handleDeleteImg}
+              />
+            </div>
+          ) : (
+            <Input type="file" onChange={handleChange} />
+          )}
+        </Spin>
 
         {contextHolder}
       </Modal>

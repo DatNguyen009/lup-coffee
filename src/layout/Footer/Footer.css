@@ -1,9 +1,14 @@
 .containerFooter {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 3rem 10rem;
   background-color: #fafafb;
+}
+
+.footer-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  margin-bottom: 10px;
 }
 @media only screen and (max-width: 480px) {
   .containerFooter {

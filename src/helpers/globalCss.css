@@ -1,0 +1,28 @@
+.flexCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+}
+
+.flexBetweenAlignCenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flexAlignCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+.colorfb693d {
+  color: #fb693d;
+}
